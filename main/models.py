@@ -2,18 +2,27 @@ from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 from datetime import datetime
 from django_countries.fields import CountryField
+from django.contrib.auth.models import AbstractUser
 
 
-class Customer(models.Model):
+class Customer(AbstractUser):
     """Customer model"""
 
     first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=100, blank=True, )
+    last_name = models.CharField(max_length=100, blank=True)
     email = models.EmailField(unique=True)
     phone = PhoneNumberField(unique=True)
 
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+
+    class Meta:
+        verbose_name = 'Customer'
+        verbose_name_plural = 'Customers'
+        
+
     def __str__(self):
-        return f'Customer: {self.first_name} {self.last_name}'
+        return f'Customer: {self.email}'
 
 
 class Adress(models.Model):
@@ -22,18 +31,28 @@ class Adress(models.Model):
     country = CountryField()
     city = models.CharField(max_length=100)
     street = models.CharField(max_length=150)
-    house = models.IntegerField()
+    house = models.CharField(max_length=50)
+
+    class Meta:
+        verbose_name = 'Adress'
+        verbose_name_plural = 'Adresses'
+
 
     def __str__(self):
         return f'{self.country} {self.city}'
 
 
-class MenuItem(models.Model):
-    """Menu model"""
+class Product(models.Model):
+    """Product model"""
 
     name = models.CharField(max_length=150)
     price = models.DecimalField(default=0, max_digits=8, decimal_places=2)
     restaurant = models.ForeignKey('Restaurant', on_delete=models.PROTECT)
+
+    class Meta:
+        verbose_name = 'Product'
+        verbose_name_plural = 'Products'
+        
 
     def __str__(self):
         return f'{self.name} from {self.restaurant} for {self.price}$'
@@ -44,18 +63,23 @@ class Restaurant(models.Model):
 
     name = models.CharField(max_length=150)
 
+    class Meta:
+        verbose_name = 'Restaurant'
+        verbose_name_plural = 'Restaurants'
+
+
+    def __str__(self):
+        return f'{self.name}'
+
 
 class OrderItem(models.Model):
     """Dish per order"""
 
-    item = models.ForeignKey('MenuItem', on_delete=models.PROTECT)
+    item = models.ForeignKey('Product', on_delete=models.PROTECT)
     quantity = models.IntegerField(default=1)
 
     def __str__(self):
-        return f'{self.quantity} of {self.item.name}'
-
-    def price(self):
-        return self.item.price
+        return f'{self.quantity} {self.item.name}'
 
 
 class Order(models.Model):
@@ -64,14 +88,33 @@ class Order(models.Model):
     date = models.DateField(default=datetime.now)
     customer = models.ForeignKey('Customer', on_delete=models.PROTECT)
     adress = models.OneToOneField('Adress', on_delete=models.CASCADE)
-    items = models.ManyToManyField('OrderItem')
+    items = models.OneToOneField('Cart', on_delete=models.CASCADE)
     restaurant = models.ForeignKey('Restaurant', on_delete=models.PROTECT)
     sum_price = models.DecimalField(default=0, max_digits=8, decimal_places=2)
     is_paid = models.BooleanField(default=False)
     is_shipped = models.BooleanField(default=False)
 
+    class Meta:
+        verbose_name = 'Order'
+        verbose_name_plural = 'Orders'
+    
+
     def __str__(self):
         return f'Order: {self.items} from {self.restaurant}'
 
-    def final_price(self):
-        return self.items.price() * self.items.quantity
+
+class Cart(models.Model):
+    """Cart for each user model"""
+
+    cart_id = models.OneToOneField(Customer, on_delete=models.CASCADE, primary_key=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    products = models.ManyToManyField('OrderItem')
+
+    class Meta:
+        verbose_name = 'Cart'
+        verbose_name_plural = 'Carts'
+        ordering = ['cart_id', '-created_at']
+        
+
+    def __str__(self):
+        return f'{self.cart_id}'

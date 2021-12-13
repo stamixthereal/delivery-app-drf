@@ -1,6 +1,7 @@
-from pathlib import Path
 import os
+
 from dotenv import load_dotenv
+from pathlib import Path
 
 
 load_dotenv()
@@ -12,6 +13,8 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+
+AUTH_USER_MODEL = 'main.Customer'
 
 
 INSTALLED_APPS = [
@@ -41,6 +44,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'delivery.urls'
 
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -63,7 +67,7 @@ WSGI_APPLICATION = 'delivery.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'delivery',
+        'NAME': 'delivery-app',
         'USER': 'postgres',
         'PASSWORD': os.environ.get('PASSWORD'),
         'HOST': 'localhost',
