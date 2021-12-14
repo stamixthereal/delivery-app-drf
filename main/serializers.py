@@ -1,6 +1,8 @@
 from rest_framework import serializers
-from .models import Customer
 from rest_framework.authentication import authenticate
+
+from .models import Customer
+
 
 class RegistrationSerializer(serializers.ModelSerializer):
     """
@@ -8,7 +10,6 @@ class RegistrationSerializer(serializers.ModelSerializer):
     Email, and password are required.
     Returns a JSON web token.
     """
-
     # The password must be validated and should not be read by the client
     password = serializers.CharField(
         max_length=128,
