@@ -3,18 +3,21 @@ from phonenumber_field.modelfields import PhoneNumberField
 from datetime import datetime
 from django_countries.fields import CountryField
 from django.contrib.auth.models import AbstractUser
+from .manager import CustomUserManager
 
 
 class Customer(AbstractUser):
     """Customer model"""
 
-    first_name = models.CharField(max_length=50)
+    username = None
+    first_name = models.CharField(max_length=50, blank=True)
     last_name = models.CharField(max_length=100, blank=True)
     email = models.EmailField(unique=True)
-    phone = PhoneNumberField(unique=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
+
+    objects = CustomUserManager()
 
     class Meta:
         verbose_name = 'Customer'
@@ -22,7 +25,7 @@ class Customer(AbstractUser):
         
 
     def __str__(self):
-        return f'Customer: {self.email}'
+        return self.email
 
 
 class Adress(models.Model):
