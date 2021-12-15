@@ -81,7 +81,7 @@ class Product(models.Model):
     """
     name = models.CharField(max_length=150)
     price = models.DecimalField(default=0, max_digits=8, decimal_places=2)
-    restaurant = models.ForeignKey('Restaurant', on_delete=models.PROTECT)
+    restaurant = models.ForeignKey('Restaurant', related_name='restaurant_name', on_delete=models.PROTECT)
 
     class Meta:
         verbose_name = 'Product'
@@ -123,7 +123,7 @@ class Order(models.Model):
     date = models.DateField(default=datetime.now)
     customer = models.ForeignKey('Customer', on_delete=models.PROTECT)
     adress = models.OneToOneField('Adress', on_delete=models.CASCADE)
-    items = models.OneToOneField('Cart', on_delete=models.CASCADE)
+    items = models.ManyToManyField('Cart')
     restaurant = models.ForeignKey('Restaurant', on_delete=models.PROTECT)
     sum_price = models.DecimalField(default=0, max_digits=8, decimal_places=2)
     is_paid = models.BooleanField(default=False)
@@ -142,7 +142,7 @@ class Cart(models.Model):
     """
     Cart for each user model
     """
-    cart_id = models.OneToOneField(Customer, on_delete=models.CASCADE, primary_key=True)
+    cart_id = models.OneToOneField('Customer', on_delete=models.CASCADE, primary_key=True)
     created_at = models.DateTimeField(auto_now_add=True)
     products = models.ManyToManyField('OrderItem')
 

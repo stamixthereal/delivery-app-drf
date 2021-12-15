@@ -1,9 +1,11 @@
-from rest_framework import status
+from rest_framework import status, viewsets, mixins
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .serializers import LoginSerializer, RegistrationSerializer
+from main.models import Product, Restaurant
+
+from .serializers import LoginSerializer, RegistrationSerializer, ProductListSerializer, RestaurantListSerializer
 
 
 class RegistrationAPIView(APIView):
@@ -48,3 +50,23 @@ class LoginAPIView(APIView):
         serializer.is_valid(raise_exception=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class ProductView(
+            mixins.ListModelMixin,
+            viewsets.GenericViewSet
+            ):
+
+    serializer_class = ProductListSerializer
+    permission_classes = [AllowAny]
+    queryset = Product.objects.all()
+
+
+class RestaurantView(
+            mixins.ListModelMixin,
+            viewsets.GenericViewSet
+            ):
+
+    serializer_class = RestaurantListSerializer
+    permission_classes = [AllowAny]
+    queryset = Restaurant.objects.all()

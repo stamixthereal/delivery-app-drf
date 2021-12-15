@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.authentication import authenticate
 
-from .models import Customer
+from .models import Customer, Product, Restaurant
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -73,3 +73,19 @@ class LoginSerializer(serializers.Serializer):
         return {
             'token': user.token,
         }
+
+
+class ProductListSerializer(serializers.ModelSerializer):
+    restaurant = serializers.SlugRelatedField(
+        read_only=True,
+        slug_field='name'
+     )
+    class Meta:
+        model = Product
+        fields = ['name', 'price', 'restaurant']
+
+
+class RestaurantListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Restaurant
+        fields = ['name']

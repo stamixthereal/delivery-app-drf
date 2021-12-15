@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
 from .forms import CustomUserChangeForm, CustomUserCreationForm
-from .models import Customer
+from .models import Customer, Product, Restaurant
 
 
 class CustomUserAdmin(UserAdmin):
@@ -32,3 +32,7 @@ class CustomUserAdmin(UserAdmin):
 
 
 admin.site.register(Customer, CustomUserAdmin)
+
+admin.site.register(Product)
+
+admin.site.register(Restaurant)
