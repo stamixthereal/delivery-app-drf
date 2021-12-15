@@ -81,7 +81,7 @@ class Product(models.Model):
     """
     name = models.CharField(max_length=150)
     price = models.DecimalField(default=0, max_digits=8, decimal_places=2)
-    restaurant = models.ForeignKey('Restaurant', related_name='restaurant_name', on_delete=models.PROTECT)
+    restaurant = models.ForeignKey('Restaurant', on_delete=models.PROTECT)
 
     class Meta:
         verbose_name = 'Product'
@@ -109,7 +109,7 @@ class OrderItem(models.Model):
     """
     Dish per order
     """
-    item = models.ForeignKey('Product', related_name='product', on_delete=models.PROTECT)
+    item = models.ForeignKey('Product', on_delete=models.PROTECT)
     quantity = models.IntegerField(default=1)
 
     def __str__(self):
