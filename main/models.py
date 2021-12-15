@@ -109,7 +109,7 @@ class OrderItem(models.Model):
     """
     Dish per order
     """
-    item = models.ForeignKey('Product', on_delete=models.PROTECT)
+    item = models.ForeignKey('Product', related_name='product', on_delete=models.PROTECT)
     quantity = models.IntegerField(default=1)
 
     def __str__(self):

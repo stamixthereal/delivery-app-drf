@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.authentication import authenticate
 
-from .models import Customer, Product, Restaurant
+from .models import (Customer, Product, Restaurant, OrderItem)
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -90,3 +90,9 @@ class RestaurantListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Restaurant
         fields = ['name']
+
+
+class ProductOrderingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderItem
+        fields = '__all__'

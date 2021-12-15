@@ -3,10 +3,10 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from main.models import Product, Restaurant
+from main.models import Product, Restaurant, OrderItem
 
 from .serializers import (LoginSerializer, ProductListSerializer,
-                          RegistrationSerializer, RestaurantListSerializer)
+                          RegistrationSerializer, RestaurantListSerializer, ProductOrderingSerializer)
 
 
 class RegistrationAPIView(APIView):
@@ -73,3 +73,13 @@ class RestaurantView(
     serializer_class = RestaurantListSerializer
     permission_classes = [AllowAny]
     queryset = Restaurant.objects.all()
+
+
+class ProductOrderView(
+            mixins.CreateModelMixin,
+            viewsets.GenericViewSet
+            ):
+
+    serializer_class = ProductOrderingSerializer
+    permission_classes = [AllowAny]
+    queryset = OrderItem.objects.all()
