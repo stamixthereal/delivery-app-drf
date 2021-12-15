@@ -55,6 +55,7 @@ class LoginAPIView(APIView):
 
 class ProductView(
             mixins.ListModelMixin,
+            mixins.RetrieveModelMixin,
             viewsets.GenericViewSet
             ):
 
@@ -65,6 +66,7 @@ class ProductView(
 
 class RestaurantView(
             mixins.ListModelMixin,
+            mixins.RetrieveModelMixin,
             viewsets.GenericViewSet
             ):
 
