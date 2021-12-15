@@ -1,5 +1,5 @@
 from rest_framework import mixins, status, viewsets
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -60,7 +60,7 @@ class ProductView(
             ):
 
     serializer_class = ProductListSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticatedOrReadOnly,]
     queryset = Product.objects.all()
 
 
@@ -71,7 +71,7 @@ class RestaurantView(
             ):
 
     serializer_class = RestaurantListSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticatedOrReadOnly,]
     queryset = Restaurant.objects.all()
 
 
@@ -81,5 +81,5 @@ class ProductOrderView(
             ):
 
     serializer_class = ProductOrderingSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticatedOrReadOnly,]
     queryset = OrderItem.objects.all()
