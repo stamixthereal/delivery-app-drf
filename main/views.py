@@ -1,11 +1,12 @@
-from rest_framework import status, viewsets, mixins
+from rest_framework import mixins, status, viewsets
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from main.models import Product, Restaurant
 
-from .serializers import LoginSerializer, RegistrationSerializer, ProductListSerializer, RestaurantListSerializer
+from .serializers import (LoginSerializer, ProductListSerializer,
+                          RegistrationSerializer, RestaurantListSerializer)
 
 
 class RegistrationAPIView(APIView):
