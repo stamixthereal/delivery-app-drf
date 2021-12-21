@@ -13,18 +13,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-AUTH_USER_MODEL = 'main.Customer'
-
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-        ),
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'main.backends.JWTAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        )
-}
-
 
 INSTALLED_APPS = [
     'django.contrib.admin',
